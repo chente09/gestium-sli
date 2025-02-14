@@ -9,6 +9,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { FormsModule } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { RouterModule } from '@angular/router';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-itinerario-form',
@@ -21,7 +23,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzSwitchModule,
     ReactiveFormsModule,
     NzSelectModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    NzIconModule
   ],
   templateUrl: './itinerario-form.component.html',
   styleUrl: './itinerario-form.component.css'
@@ -56,7 +60,8 @@ export class ItinerarioFormComponent implements OnInit {
       piso: [''],
       tramite: ['', Validators.required],
       solicita: [''],
-      fechaSolicitud: ['', Validators.required],
+      fechaSolicitud: [new Date().toISOString().split('T')[0], Validators.required],
+      fechaTermino: ['', Validators.required],
       estado: [false],
       observaciones: [''],
       area: [this.areas[0]],
@@ -100,40 +105,44 @@ export class ItinerarioFormComponent implements OnInit {
       this.message.warning('Debe seleccionar un área y completar todos los campos obligatorios.');
       return;
     }
-
+  
     this.isLoading = true;
     this.message.loading('Guardando itinerario...', { nzDuration: 1000 });
-
+  
     try {
       const formData = this.itinerarioForm.value;
-      if (!formData.tramite.trim() || !formData.fechaSolicitud.trim()) {
+      if (!formData.tramite.trim() || !formData.fechaTermino.trim()) {
         this.message.error('Los campos obligatorios no pueden estar vacíos.');
         this.isLoading = false;
         return;
       }
-
-      // 🌟 Enviar imagen y PDF al servicio
+  
       await this.itinerarioService.addItinerario(
         formData, 
         this.selectedImage ?? undefined, 
         this.selectedPDF ?? undefined
       );
+  
       this.message.success('Itinerario guardado correctamente 🎉');
-
-      // 🌟 Reiniciar formulario y archivos seleccionados
-      this.itinerarioForm.reset();
+  
+      // Reiniciar formulario
+      this.itinerarioForm.reset({
+        fechaSolicitud: new Date().toISOString().split('T')[0], // Mantiene la fecha actual por defecto
+        area: this.areas[0]
+      });
+  
       this.selectedImage = null;
       this.selectedPDF = null;
       this.selectedArea = this.areas[0];
-
+  
       this.clearFileInputs();
     } catch (error) {
       console.error('Error al guardar el itinerario:', error);
       this.message.error('Hubo un error al guardar el itinerario. Intente de nuevo.');
     }
-
+  
     this.isLoading = false;
-  }
+  }  
 
   // 🌟 Método para limpiar los inputs de archivo
   clearFileInputs(): void {

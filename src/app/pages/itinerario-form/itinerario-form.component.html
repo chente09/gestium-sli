@@ -1,7 +1,7 @@
 <form nz-form [formGroup]="itinerarioForm" (ngSubmit)="submitForm()" class="itinerario-form">
     <!-- Selector de Área -->
     <nz-form-item>
-        <nz-form-label nzFor="area" nzWidth="200px">Área</nz-form-label>
+        <nz-form-label nzFor="area" nzRequired nzWidth="200px">Área</nz-form-label>
         <nz-form-control>
             <nz-select formControlName="area">
                 <nz-option *ngFor="let area of areas" [nzValue]="area" [nzLabel]="area"></nz-option>
@@ -30,9 +30,9 @@
         </nz-row>
 
         <nz-form-item>
-            <nz-form-label nzFor="tramite" nzWidth="200px">Trámite</nz-form-label>
+            <nz-form-label nzFor="tramite" nzRequired nzWidth="200px">Trámite</nz-form-label>
             <nz-form-control>
-                <input nz-input formControlName="tramite" placeholder="Ingrese el trámite" />
+                <input nz-input formControlName="tramite" placeholder="Ingrese el trámite" required />
             </nz-form-control>
         </nz-form-item>
 
@@ -41,19 +41,38 @@
                 <nz-form-item>
                     <nz-form-label nzFor="solicita" nzWidth="200px">Solicita</nz-form-label>
                     <nz-form-control>
-                        <input nz-input formControlName="solicita" placeholder="Solicitante" />
+                        <input nz-input formControlName="solicita" placeholder="SIngresar datos si es necesario especificar quien recibe el trámite" />
                     </nz-form-control>
                 </nz-form-item>
             </nz-col>
             <nz-col nzSpan="12">
                 <nz-form-item>
-                    <nz-form-label nzFor="fechaSolicitud" nzWidth="200px">Fecha de Solicitud</nz-form-label>
+                    <nz-form-label nzFor="fechaTermino" nzRequired nzWidth="200px">Fecha de Término</nz-form-label>
                     <nz-form-control>
-                        <input nz-input formControlName="fechaSolicitud" type="date" />
+                        <input nz-input formControlName="fechaTermino" type="date" required />
                     </nz-form-control>
                 </nz-form-item>
             </nz-col>
         </nz-row>
+
+        <!-- <nz-row [nzGutter]="16">
+            <nz-col nzSpan="12">
+                <nz-form-item>
+                    <nz-form-label nzFor="fechaTermino" nzWidth="200px">Fecha de Término</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="fechaTermino" type="date" required />
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="12">
+                <nz-form-item>
+                    <nz-form-label nzFor="estado" nzWidth="200px">Estado</nz-form-label>
+                    <nz-form-control>
+                        <nz-switch formControlName="estado"></nz-switch>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </nz-row> -->
 
         <nz-form-item>
             <nz-form-label nzFor="observaciones" nzWidth="200px">Observaciones</nz-form-label>
@@ -85,10 +104,18 @@
 
         <nz-form-item>
             <nz-form-control>
-                <button nz-button nzType="primary" nzBlock [disabled]="isLoading" [nzLoading]="isLoading">Guardar</button>
+                <button class="save-button" nz-button nzBlock="true" [disabled]="isLoading" [nzLoading]="isLoading" ><nz-icon [nzType]="'save'" ></nz-icon></button>
             </nz-form-control>
         </nz-form-item>
     </div>
 
     <p *ngIf="isLoading">Guardando...</p>
 </form>
+<div class="header-grid">
+    <div class="header-item">
+        <a routerLink="/itinerario" class="link">Volver</a>
+    </div>
+    <div class="header-item">
+        <a routerLink="/history-itinerario" class="link">Historial de Itinerario</a>
+    </div>
+</div>
