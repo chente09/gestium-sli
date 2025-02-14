@@ -1,13 +1,19 @@
-<nz-table #itinerarioTable nzBordered [nzData]="itinerarios" nzTableLayout="fixed">
+<nz-table #itinerarioTable nzBordered [nzData]="itinerarios" nzTableLayout="fixed" >
     <thead>
         <tr>
             <th nzWidth="10%">Área</th>
+            <th nzWidth="10%">Estado</th>
             <th nzWidth="10%">Juzgado</th>
-            <th nzWidth="15%">Piso</th>
+            <th nzWidth="10%">Piso</th>
             <th nzWidth="15%">Trámite</th>
-            <th nzWidth="15%">Solicita</th>
-            <th nzWidth="15%">Fecha Solicitud</th>
+            <th nzWidth="10%">Solicita</th>
+            <th nzWidth="12%">Fecha Solicitud</th>
             <th nzWidth="15%">Observaciones</th>
+            <th nzWidth="10%">Imagen</th>
+            <th nzWidth="10%">PDF</th>
+            <th nzWidth="10%">Fecha Completado</th>
+            <th nzWidth="10%">Hora Completado</th>
+            <th nzWidth="15%">Observaciones Completado</th>
             <th nzWidth="10%">Acciones</th>
         </tr>
     </thead>
@@ -15,12 +21,19 @@
         <tr *ngFor="let item of itinerarios; trackBy: trackById">
             <!-- Modo lectura -->
             <td *ngIf="!editCache[item.id]?.edit">{{ item.area }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.estado ? 'Completado' : 'Pendiente' }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.juzgado }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.piso }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.tramite }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.solicita }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.fechaSolicitud }}</td>
             <td *ngIf="!editCache[item.id]?.edit">{{ item.observaciones }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.imagen }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.pdf }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.fechaCompletado }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.horaCompletado }}</td>
+            <td *ngIf="!editCache[item.id]?.edit">{{ item.obsCompletado }}</td>
+            
 
             <!-- Modo edición -->
             <td *ngIf="editCache[item.id]?.edit">
@@ -48,12 +61,16 @@
             <!-- Acciones -->
             <td>
                 <ng-container *ngIf="!editCache[item.id]?.edit">
-                    <button nz-button nzType="link" (click)="startEdit(item.id)">Editar</button>
+                    <!-- Confirmación de eliminación -->
+                    <button nz-button nzType="link" nzDanger nz-popconfirm
+                        nzPopconfirmTitle="¿Seguro que quieres eliminar?"
+                        (nzOnConfirm)="eliminar(item.id)"><nz-icon [nzType]="'delete'"></nz-icon></button>
+                    <button nz-button nzType="link" nzInfo (click)="startEdit(item.id)"><nz-icon [nzType]="'edit'"></nz-icon></button>
                 </ng-container>
                 <ng-container *ngIf="editCache[item.id]?.edit">
-                    <button nz-button nzType="primary" (click)="saveEdit(item.id)">Guardar</button>
-                    <button nz-button nzType="default" nz-popconfirm nzPopconfirmTitle="¿Seguro que quieres cancelar?" 
-                            (nzOnConfirm)="cancelEdit(item.id)">Cancelar</button>
+                    <button nz-button nzType="link" (click)="saveEdit(item.id)"><nz-icon [nzType]="'check'"></nz-icon></button>
+                    <button nz-button nzType="link" nzDanger nz-popconfirm nzPopconfirmTitle="¿Seguro que quieres cancelar?"
+                        (nzOnConfirm)="cancelEdit(item.id)"><nz-icon [nzType]="'close'"></nz-icon></button>
                 </ng-container>
             </td>
         </tr>

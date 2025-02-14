@@ -5,6 +5,8 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterModule } from '@angular/router';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+
 
 @Component({
   selector: 'app-welcome',
@@ -14,7 +16,8 @@ import { RouterModule } from '@angular/router';
     NzCardModule,
     NzGridModule,
     NzIconModule,
-    RouterModule
+    RouterModule,
+    NzBreadCrumbModule
   ],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css'

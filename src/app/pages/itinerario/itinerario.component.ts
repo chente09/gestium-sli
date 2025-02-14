@@ -10,6 +10,8 @@ import { ItinerarioService, Itinerario } from '../../services/itinerario/itinera
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-itinerario',
@@ -22,6 +24,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     NzTagModule,
     NzButtonModule,
     NzDatePickerModule,
+    NzBreadCrumbModule,
+    RouterModule
   ],
   providers:[NzModalService],
   templateUrl: './itinerario.component.html',

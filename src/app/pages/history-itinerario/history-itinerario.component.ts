@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { FormsModule } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 
@@ -14,7 +18,10 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     NzTagModule,
     NzTableModule,
-    FormsModule
+    FormsModule,
+    NzPopconfirmModule,
+    NzButtonModule,
+    NzIconModule
   ],
   templateUrl: './history-itinerario.component.html',
   styleUrl: './history-itinerario.component.css'
@@ -24,7 +31,10 @@ export class HistoryItinerarioComponent implements OnInit {
   itinerarios: Itinerario[] = [];
   editCache: { [key: string]: { edit: boolean; data: any } } = {};
 
-  constructor(private itinerarioService: ItinerarioService) { }
+  constructor(
+    private itinerarioService: ItinerarioService,
+    private message: NzMessageService
+  ) { }
 
   ngOnInit(): void {
     this.itinerarioService.getItinerarios().subscribe((data) => {
@@ -49,7 +59,6 @@ export class HistoryItinerarioComponent implements OnInit {
       this.editCache[id].edit = true;
     }
   }
-
   cancelEdit(id: string): void {
     const index = this.itinerarios.findIndex(item => item.id === id);
     if (index !== -1) {
@@ -59,7 +68,6 @@ export class HistoryItinerarioComponent implements OnInit {
       };
     }
   }
-
   async saveEdit(id: string): Promise<void> {
     if (!this.editCache[id]) return;
 
@@ -86,7 +94,6 @@ export class HistoryItinerarioComponent implements OnInit {
       console.error('Error al actualizar el itinerario', error);
     }
   }
-
   updateEditCache(itinerarios: Itinerario[]): void {
     itinerarios.forEach(item => {
       if (item.id) {
@@ -95,6 +102,16 @@ export class HistoryItinerarioComponent implements OnInit {
           data: { ...item }
         };
       }
+    });
+  }
+
+  eliminar(id: string): void {
+    this.itinerarioService.deleteItinerario(id).then(() => {
+      this.itinerarios = this.itinerarios.filter(it => it.id !== id);
+      this.message.success('Itinerario eliminado correctamente.');
+    }).catch(error => {
+      this.message.error('Error al eliminar el itinerario.');
+      console.error(error);
     });
   }
 }

@@ -11,6 +11,7 @@ export interface Itinerario {
   tramite: string;
   solicita: string;
   fechaSolicitud: string; // Formato: YYYY-MM-DD
+  fechaTermino: string;
   estado: boolean;
   observaciones?: string;
   imagen?: string; // URL de la imagen en Firebase Storage
@@ -19,6 +20,7 @@ export interface Itinerario {
   fechaCompletado?: string;
   horaCompletado?: string;
   obsCompletado?: string;
+  imgcompletado?: string;
 }
 
 @Injectable({
